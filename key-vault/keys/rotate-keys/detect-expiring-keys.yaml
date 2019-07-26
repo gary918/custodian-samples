@@ -1,0 +1,10 @@
+policies:
+  - name: detect-expiring-keys
+    description: Policy finds all keyvault keys that will expire within 10 days
+    resource: azure.keyvault-keys
+    filters:
+    - type: value
+      key: attributes.exp
+      value_type: expiration
+      op: lt
+      value: 10

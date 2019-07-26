@@ -1,0 +1,19 @@
+policies:
+  - name: restrict-outbound-access
+    resource: azure.networksecuritygroup
+    description: Block the given NSG with any port open for Outbound access
+    filters:
+      # Filter out NSG to prevent accidental blocks on all NSGs
+      - type: value
+        key: name
+        op: eq
+        value_type: normalize
+        value: nsg-name
+      - type: egress
+        access: Allow
+        match: any
+        ports: '0-65000'
+    actions:
+      - type: close
+        direction: Outbound
+        ports: '0-65000'

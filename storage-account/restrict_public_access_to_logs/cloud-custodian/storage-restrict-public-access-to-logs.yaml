@@ -1,0 +1,29 @@
+policies:
+- name: restrict-public-access-to-logs-storage
+  description: |
+    Remove access to log storage from public networks
+  resource: azure.storage
+  filters:
+    - not:
+      - type: value
+        key: properties.supportsHttpsTrafficOnly
+        op: equal
+        value: true
+      - type: value
+        key: properties.networkAcls.bypass
+        op: not-in
+        value: AzureServices
+      - type: value
+        key: properties.networkAcls.defaultAction
+        op: equal
+        value: Deny
+  # ===============================================
+  # unmark below and update - ip-address-or-range to authorized ip range or address
+  # to allow access from those IPs
+  # ===============================================
+  # actions:
+  #   - type: set-network-rules
+  #     default-action: Deny
+  #     bypass: [Logging, Metrics]
+  #     ip-rules:
+  #       - ip-address-or-range: <IP RANGE or ADDRESS>

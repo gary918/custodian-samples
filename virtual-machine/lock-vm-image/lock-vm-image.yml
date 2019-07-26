@@ -1,0 +1,12 @@
+policies:
+  - name: lock-vm-image
+    description: Find vm images that do not have 'ReadOnly' lock access and then lock them.
+    resource: azure.image
+    filters:
+      - not:
+        - type: resource-lock
+          lock-type: ReadOnly
+    actions:
+      - type: lock
+        lock-type: ReadOnly
+

@@ -1,0 +1,17 @@
+# Auto tag stopped VMs
+policies:
+  - name: tag-newly-created-vms
+    resource: azure.vm
+    mode:
+      type: azure-event-grid
+      events: [
+          {
+            resourceProvider: "Microsoft.Compute/virtualMachines",
+            event: "write"
+          }
+        ]
+    filters:
+      - "tag:CreatorEmail": absent
+    actions:
+      - type: auto-tag-user
+        tag: CreatorEmail

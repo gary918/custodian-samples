@@ -1,0 +1,43 @@
+# Policy adds the creator's email as a tag to a resource group, virtual machines, vnets, storage accounts
+# When run, looks for resources created 10 days prior and tags them with the creator
+policies:
+    - name: azure-auto-tag-resources
+      description: |
+        Adds the creator's email as a tag to a virtual machines, networks and storage accounts
+        looking up to 10 days prior
+      resource: azure.armresource
+      filters:
+        - type: resource-type
+          values:
+            - Microsoft.Network/virtualNetworks
+            - Microsoft.Compute/virtualMachines
+            - Microsoft.Storage/storageAccounts
+      actions:
+       - type: auto-tag-user
+         tag: CreatorEmail
+         days: 10
+
+    - name: azure-auto-tag-resource-group
+      description: |
+        Adds the creator's email as a tag to resource group
+      resource: azure.resourcegroup
+      actions:
+       - type: auto-tag-user
+         tag: CreatorEmail
+         days: 10
+
+    - name: azure-tag-default-email
+      description: |
+        If creator email address is "Unknown", then replace it with a default email address
+      resource: azure.armresource
+      filters:
+        - type: resource-type
+          values:
+            - Microsoft.Network/virtualNetworks
+            - Microsoft.Compute/virtualMachines
+            - Microsoft.Storage/storageAccounts
+        - tag:CreatorEmail: Unknown
+      actions:
+        - type: tag
+          tag: CreatorEmail
+          value: default-email@contoso.com

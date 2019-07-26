@@ -1,0 +1,72 @@
+{
+    "description": "Deploy network watcher on vnets",
+    "displayName": "Deploy Network Watcher",
+    "id": "/subscriptions/371e8e7f-bce0-4db0-9df5-d88805b41101/providers/Microsoft.Authorization/policyDefinitions/deploy-network-watcher",
+    "metadata": {
+      "createdBy": "487fe5b9-4821-4e77-820a-0cb2aacce845",
+      "createdOn": "2019-07-17T09:52:46.4853063Z",
+      "updatedBy": null,
+      "updatedOn": null
+    },
+    "mode": "Indexed",
+    "name": "deploy-network-watcher",
+    "parameters": {
+      "location": {
+        "metadata": {
+          "description": "The location that can be specified when deploying resources",
+          "displayName": "Deployable location",
+          "strongType": "location"
+        },
+        "type": "String"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "equals": "Microsoft.Network/virtualNetworks",
+        "field": "type"
+      },
+      "then": {
+        "details": {
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "parameters": {
+                "location": {
+                  "value": "[parameters('location')]"
+                }
+              },
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "location": {
+                    "type": "string"
+                  }
+                },
+                "resources": [
+                  {
+                    "apiVersion": "2016-09-01",
+                    "location": "[parameters('location')]",
+                    "name": "[concat('networkWatcher_', parameters('location'))]",
+                    "type": "Microsoft.Network/networkWatchers"
+                  }
+                ]
+              }
+            }
+          },
+          "existenceCondition": {
+            "equals": "[field('location')]",
+            "field": "location"
+          },
+          "resourceGroupName": "networkWatcherRG",
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
+          ],
+          "type": "Microsoft.Network/networkWatchers"
+        },
+        "effect": "deployIfNotExists"
+      }
+    },
+    "policyType": "Custom",
+    "type": "Microsoft.Authorization/policyDefinitions"
+  }

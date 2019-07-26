@@ -1,0 +1,15 @@
+policies:
+  - name: restrict-outbound-internet-rule
+    resource: azure.networksecuritygroup
+    description: Finds all NSGs with any outbound rule tagged to internet and deny
+    filters:
+      - type: egress
+        match: 'any'
+        access: 'Allow'
+      - type: value
+        key: properties.securityRules[*].properties.destinationAddressPrefix
+        op: contains
+        value: Internet
+    actions:
+      - type: close
+        direction: Outbound

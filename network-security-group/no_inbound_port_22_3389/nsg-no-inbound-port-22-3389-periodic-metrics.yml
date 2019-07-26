@@ -1,0 +1,27 @@
+policies:
+  - name: periodic-no-inbound-rule-SSH-RDP-metrics
+    description: Filters NSGs which are attached to VM through network interface, and have SSH/RDP port open.
+    mode:
+      type: azure-periodic
+      schedule: '0 0 * * * *'
+      provision-options:
+        servicePlan:
+          name: cloud-custodian-plan
+          location: eastasia
+          resourceGroupName: c7nrg
+      execution-options:
+        metrics: azure://<resource_group_name>/<app_insights_name>
+    resource: azure.networksecuritygroup
+    filters:
+      - type: ingress
+        ports: '22,3389'
+        match: 'any'
+        access: 'Allow'
+        ipProtocol: TCP
+      - type: value
+        key: properties.networkInterfaces[0].id
+        value: not-null
+    actions:
+      - type: close
+        ports: '22,3389'
+        direction: 'Inbound'

@@ -1,0 +1,10 @@
+{
+    "location": {
+        "type": "string",
+        "metadata": {
+            "description": "The location that can be specified when deploying resources",
+            "strongType": "location",
+            "displayName": "Deployable location"
+        }
+    }
+}

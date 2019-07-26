@@ -1,0 +1,17 @@
+policies:
+  - name: no-inbound-rule-SSH-RDP
+    description: Filters NSGs which are attached to VM through network interface, and have SSH/RDP port open.
+    resource: azure.networksecuritygroup
+    filters:
+      - type: ingress
+        ports: '22,3389'
+        match: 'any'
+        access: 'Allow'
+        ipProtocol: TCP
+      - type: value
+        key: properties.networkInterfaces[0].id
+        value: not-null
+    actions:
+      - type: close
+        ports: '22,3389'
+        direction: 'Inbound'

@@ -1,0 +1,27 @@
+policies:
+  - name: audit-underutilized-resources
+    resource: azure.vm
+    mode:
+      type: azure-periodic
+      schedule: '0 0 * * * *'
+      provision-options:
+        servicePlan:
+          name: custodianserviceplan
+          location: East Asia
+          resourceGroupName: custodian-rg
+        storageAccount:
+          name: custodianstorage
+          location: East Asia
+          resourceGroupName: custodian-rg
+        appInsigts:
+          name: custodianappinsights
+          location: East Asia
+          resourceGroupName: custodian-rg
+    filters:
+      - type: metric
+        metric: Percentage CPU
+        aggregation: average
+        op: lt
+        threshold: 30
+        timeframe: 1
+    

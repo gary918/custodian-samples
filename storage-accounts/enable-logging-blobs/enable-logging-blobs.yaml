@@ -1,0 +1,30 @@
+# Policy retrieves all storage accounts in the subscription.
+# Applies filters to find accounts where logging isn't fully enabled for blob storage.
+# Applies an action to enable logging for all settings (read, write, and delete )for blob storage
+# and retain for 5 days.
+
+- name: enable-logging-azure-blobs
+  description: Enables full logging for blob storage on accounts that are not fully enabled (read, write, or delete are disabled). 
+  resource: azure.storage
+  filters:
+    - or:
+        - type: storage-diagnostic-settings
+          storage-type: blob
+          key: logging.delete
+          op: eq
+          value: False
+        - type: storage-diagnostic-settings
+          storage-type: blob
+          key: logging.read
+          op: eq
+          value: False
+        - type: storage-diagnostic-settings
+          storage-type: blob
+          key: logging.write
+          op: eq
+          value: False
+  actions:
+    - type: set-log-settings
+      storage-types: [blob]
+      retention: 5
+      log: [read, write, delete]

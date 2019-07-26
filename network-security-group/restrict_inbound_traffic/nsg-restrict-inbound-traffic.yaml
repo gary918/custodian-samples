@@ -1,0 +1,23 @@
+# Policy retrieves a list of all NSGs in the subscription.
+# Applies a set of filters to find NSGs with at least one open port.
+# Applies an action to block all open ports on filtered NSGs.
+
+policies:
+  - name: restrict-inbound-traffic
+    resource: azure.networksecuritygroup
+    description: Finds all NSGs with any port open for Inbound traffic and blocks them.
+    filters:
+      # Filter NSGs to prevent accidental blocks of all ports on all NSGs
+      - type: value
+        key: name
+        op: eq
+        value_type: normalize
+        value: target-nsg
+      - type: ingress
+        access: Allow
+        match: any
+        ports: '0-65000'
+    actions:
+      - type: close
+        direction: Inbound
+        ports: '0-65000'
