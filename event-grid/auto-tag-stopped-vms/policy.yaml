@@ -1,4 +1,4 @@
-# Auto tag stopped VMs
+# Auto tag stopped VMs, Aug 2019
 policies:
   - name: tag-newly-created-vms
     resource: azure.vm
