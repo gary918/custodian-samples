@@ -1,0 +1,13 @@
+policies:
+    - name: my-first-policy
+      description: |
+        Adds a tag to a virtual machines
+      resource: azure.vm
+      filters:
+        - type: value
+          key: name
+          value: GaryC7NVM
+      actions:
+       - type: tag
+         tag: Hello
+         value: World
