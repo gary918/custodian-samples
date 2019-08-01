@@ -1,0 +1,11 @@
+mailer
+webhook: (proxy)
+- request/response, keyvault
+logic app
+- we dont block any actions (e.g. resizing VMs)
+
+
+resource vm, report (call cost API)
+custodian report
+output on screen, storage, (tomorrow, talk about splunk)
+loggin in app insight: getting a list of running VMs

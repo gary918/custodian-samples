@@ -9,5 +9,5 @@ policies:
           value: GaryC7NVM
       actions:
        - type: tag
-         tag: Hello
-         value: World
+         tag: Towhere
+         value: Beijing
