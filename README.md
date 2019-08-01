@@ -1,12 +1,28 @@
 # Introduction  
-•	Cloud Custodian Overview: https://cloudcustodian.io/
-•	Cloud Custodian Gtihub Repository: https://github.com/cloud-custodian/cloud-custodian
-•	Cloud Custodian Customer Example: https://github.com/logachev/custodian-samples
+- Cloud Custodian Overview: https://cloudcustodian.io/
+- Cloud Custodian Gtihub Repository: https://github.com/cloud-custodian/cloud-custodian
+- Cloud Custodian Customer Example: https://github.com/logachev/custodian-samples
 
 # Getting Started
 ## Authentication
 ### On Windows 10
 1. Run set for checking the existing environment variables
+```
+set
+```
+2. Login to Azure to get the following environment variables
+```
+az login
+az ad sp create-for-rbac --name gary -o table
+```
+Please note that AZURE_CLIENT_ID = AppId
+3. Set the environment variables
+```
+set AZURE_TENANT_ID=abcdef89-3dea-4af8
+set AZURE_SUBSCRIPTION_ID=abcd4ec8-93f4-9e9d
+set AZURE_CLIENT_ID=abcd0df3ee0-0c0da
+set AZURE_CLIENT_SECRET=abcd4041-9c8f-f40
+```
 
 
 # Build and Test
